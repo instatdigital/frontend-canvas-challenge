@@ -1,0 +1,40 @@
+{
+  "name": "frontend-canvas-challenge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
+  },
+  "scripts": {
+    "dev": "npm run build -w @canvas/contracts && npm run dev -w @canvas/api",
+    "build": "npm run build -w @canvas/contracts && npm run build -w @canvas/api",
+    "start": "npm run start -w @canvas/api",
+    "test": "npm run build && npm run test -w @canvas/api",
+    "docs:generate": "npm run build && node scripts/openapi.mjs --write",
+    "docs:check": "node scripts/openapi.mjs",
+    "check": "npm run format:check && npm test && npm run docs:check",
+    "smoke": "node scripts/smoke.mjs",
+    "data:reset": "node scripts/reset.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "13.0.0",
+    "@types/node": "24.13.3",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true
+  }
+}

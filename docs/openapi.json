@@ -1,0 +1,4899 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Canvas API",
+    "version": "1.0.0",
+    "description": "Локальный API для рабочего пространства с нодами. Авторизация не нужна. GET графа возвращает ETag; PUT требует If-Match. Ответы содержат сам ресурс, без обёртки data. Генерация имитируется."
+  },
+  "components": {
+    "schemas": {
+      "def-0": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "title": "ErrorResponse"
+      }
+    }
+  },
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "getApi",
+        "summary": "Ресурсы API",
+        "tags": [
+          "API"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "version",
+                    "links"
+                  ],
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_getApi",
+        "summary": "Заголовки: Ресурсы API",
+        "tags": [
+          "API"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_getApi",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/config": {
+      "get": {
+        "operationId": "getConfig",
+        "summary": "Параметры тестового",
+        "tags": [
+          "API"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "debounceMs",
+                    "pollIntervalMs",
+                    "generationDelayMs",
+                    "maxNodes",
+                    "maxEdges",
+                    "nodeTypes",
+                    "links"
+                  ],
+                  "properties": {
+                    "debounceMs": {
+                      "type": "integer"
+                    },
+                    "pollIntervalMs": {
+                      "type": "integer"
+                    },
+                    "generationDelayMs": {
+                      "type": "integer"
+                    },
+                    "maxNodes": {
+                      "type": "integer"
+                    },
+                    "maxEdges": {
+                      "type": "integer"
+                    },
+                    "nodeTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_getConfig",
+        "summary": "Заголовки: Параметры тестового",
+        "tags": [
+          "API"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_getConfig",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/spaces": {
+      "get": {
+        "operationId": "listSpaces",
+        "summary": "Рабочие пространства",
+        "tags": [
+          "Spaces"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "title",
+                      "createdAt",
+                      "links"
+                    ],
+                    "properties": {
+                      "id": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "title": {
+                        "minLength": 1,
+                        "maxLength": 80,
+                        "pattern": "\\S",
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "href",
+                            "method"
+                          ],
+                          "properties": {
+                            "href": {
+                              "pattern": "^/",
+                              "type": "string"
+                            },
+                            "method": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "GET"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "POST"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "PUT"
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSpace",
+        "summary": "Создать рабочее пространство",
+        "tags": [
+          "Spaces"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "\\S",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Ресурс создан.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "createdAt",
+                    "links"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "title": {
+                      "minLength": 1,
+                      "maxLength": 80,
+                      "pattern": "\\S",
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Ресурс создан."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE: максимум 64 КБ.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "UNSUPPORTED_MEDIA_TYPE или UNSUPPORTED_CONTENT_ENCODING.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Accept-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Только при неподдерживаемом Content-Encoding: identity."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_listSpaces",
+        "summary": "Заголовки: Рабочие пространства",
+        "tags": [
+          "Spaces"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_listSpaces",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/spaces/{spaceId}": {
+      "get": {
+        "operationId": "getSpace",
+        "summary": "Рабочее пространство",
+        "tags": [
+          "Spaces"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "createdAt",
+                    "links"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "title": {
+                      "minLength": 1,
+                      "maxLength": 80,
+                      "pattern": "\\S",
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_getSpace",
+        "summary": "Заголовки: Рабочее пространство",
+        "tags": [
+          "Spaces"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_getSpace",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/spaces/{spaceId}/graph": {
+      "get": {
+        "operationId": "getGraph",
+        "summary": "Граф и его ETag",
+        "tags": [
+          "Graph"
+        ],
+        "description": "Сохранённые nodes, edges и viewport. If-None-Match позволяет получить 304 без тела. Сильный ETag относится только к этому ресурсу.",
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "nodes",
+                    "edges",
+                    "viewport"
+                  ],
+                  "properties": {
+                    "nodes": {
+                      "maxItems": 20,
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "position",
+                              "data"
+                            ],
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "prompt"
+                                ]
+                              },
+                              "position": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "x",
+                                  "y"
+                                ],
+                                "properties": {
+                                  "x": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "data": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "text"
+                                ],
+                                "properties": {
+                                  "text": {
+                                    "maxLength": 2000,
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "position",
+                              "data"
+                            ],
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "generator"
+                                ]
+                              },
+                              "position": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "x",
+                                  "y"
+                                ],
+                                "properties": {
+                                  "x": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "data": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "label"
+                                ],
+                                "properties": {
+                                  "label": {
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "pattern": "\\S",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "position",
+                              "data"
+                            ],
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "result"
+                                ]
+                              },
+                              "position": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "x",
+                                  "y"
+                                ],
+                                "properties": {
+                                  "x": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "data": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "label"
+                                ],
+                                "properties": {
+                                  "label": {
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "pattern": "\\S",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "edges": {
+                      "maxItems": 20,
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "source",
+                          "target"
+                        ],
+                        "properties": {
+                          "id": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "source": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "target": {
+                            "format": "uuid",
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "viewport": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "x",
+                        "y",
+                        "zoom"
+                      ],
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        },
+                        "zoom": {
+                          "minimum": 0.1,
+                          "maximum": 4,
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "GRAPH_VERSION_CONFLICT.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "replaceGraph",
+        "summary": "Заменить граф целиком",
+        "tags": [
+          "Graph"
+        ],
+        "description": "Передайте весь граф и If-Match из предыдущего GET/PUT. Ответ содержит тот же JSON и новый ETag. Идентичный повтор с актуальным ETag не меняет данные.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "nodes",
+                  "edges",
+                  "viewport"
+                ],
+                "properties": {
+                  "nodes": {
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "type",
+                            "position",
+                            "data"
+                          ],
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "prompt"
+                              ]
+                            },
+                            "position": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "x",
+                                "y"
+                              ],
+                              "properties": {
+                                "x": {
+                                  "minimum": -10000,
+                                  "maximum": 10000,
+                                  "type": "number"
+                                },
+                                "y": {
+                                  "minimum": -10000,
+                                  "maximum": 10000,
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "data": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "text"
+                              ],
+                              "properties": {
+                                "text": {
+                                  "maxLength": 2000,
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "type",
+                            "position",
+                            "data"
+                          ],
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "generator"
+                              ]
+                            },
+                            "position": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "x",
+                                "y"
+                              ],
+                              "properties": {
+                                "x": {
+                                  "minimum": -10000,
+                                  "maximum": 10000,
+                                  "type": "number"
+                                },
+                                "y": {
+                                  "minimum": -10000,
+                                  "maximum": 10000,
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "data": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "label"
+                              ],
+                              "properties": {
+                                "label": {
+                                  "minLength": 1,
+                                  "maxLength": 80,
+                                  "pattern": "\\S",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "type",
+                            "position",
+                            "data"
+                          ],
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "result"
+                              ]
+                            },
+                            "position": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "x",
+                                "y"
+                              ],
+                              "properties": {
+                                "x": {
+                                  "minimum": -10000,
+                                  "maximum": 10000,
+                                  "type": "number"
+                                },
+                                "y": {
+                                  "minimum": -10000,
+                                  "maximum": 10000,
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "data": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "label"
+                              ],
+                              "properties": {
+                                "label": {
+                                  "minLength": 1,
+                                  "maxLength": 80,
+                                  "pattern": "\\S",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "edges": {
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "source",
+                        "target"
+                      ],
+                      "properties": {
+                        "id": {
+                          "format": "uuid",
+                          "type": "string"
+                        },
+                        "source": {
+                          "format": "uuid",
+                          "type": "string"
+                        },
+                        "target": {
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "viewport": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "x",
+                      "y",
+                      "zoom"
+                    ],
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      },
+                      "zoom": {
+                        "minimum": 0.1,
+                        "maximum": 4,
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "ETag текущего графа, включая кавычки. Без заголовка сервер вернёт 428."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "nodes",
+                    "edges",
+                    "viewport"
+                  ],
+                  "properties": {
+                    "nodes": {
+                      "maxItems": 20,
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "position",
+                              "data"
+                            ],
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "prompt"
+                                ]
+                              },
+                              "position": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "x",
+                                  "y"
+                                ],
+                                "properties": {
+                                  "x": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "data": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "text"
+                                ],
+                                "properties": {
+                                  "text": {
+                                    "maxLength": 2000,
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "position",
+                              "data"
+                            ],
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "generator"
+                                ]
+                              },
+                              "position": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "x",
+                                  "y"
+                                ],
+                                "properties": {
+                                  "x": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "data": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "label"
+                                ],
+                                "properties": {
+                                  "label": {
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "pattern": "\\S",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "position",
+                              "data"
+                            ],
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "result"
+                                ]
+                              },
+                              "position": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "x",
+                                  "y"
+                                ],
+                                "properties": {
+                                  "x": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  },
+                                  "y": {
+                                    "minimum": -10000,
+                                    "maximum": 10000,
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "data": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "label"
+                                ],
+                                "properties": {
+                                  "label": {
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "pattern": "\\S",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "edges": {
+                      "maxItems": 20,
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "source",
+                          "target"
+                        ],
+                        "properties": {
+                          "id": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "source": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "target": {
+                            "format": "uuid",
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "viewport": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "x",
+                        "y",
+                        "zoom"
+                      ],
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        },
+                        "zoom": {
+                          "minimum": 0.1,
+                          "maximum": 4,
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "GRAPH_VERSION_CONFLICT.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE: максимум 64 КБ.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "UNSUPPORTED_MEDIA_TYPE или UNSUPPORTED_CONTENT_ENCODING.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Accept-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Только при неподдерживаемом Content-Encoding: identity."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "INVALID_GRAPH.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "PRECONDITION_REQUIRED.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_getGraph",
+        "summary": "Заголовки: Граф и его ETag",
+        "tags": [
+          "Graph"
+        ],
+        "description": "Сохранённые nodes, edges и viewport. If-None-Match позволяет получить 304 без тела. Сильный ETag относится только к этому ресурсу.",
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "GRAPH_VERSION_CONFLICT.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_getGraph",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/spaces/{spaceId}/generations": {
+      "get": {
+        "operationId": "listGenerations",
+        "summary": "Генерации пространства",
+        "tags": [
+          "Generations"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "spaceId",
+                      "nodeId",
+                      "resultNodeId",
+                      "prompt",
+                      "graphETag",
+                      "scenario",
+                      "status",
+                      "createdAt",
+                      "imageUrl",
+                      "failureCode",
+                      "links"
+                    ],
+                    "properties": {
+                      "id": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "spaceId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "nodeId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "resultNodeId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "prompt": {
+                        "type": "string"
+                      },
+                      "graphETag": {
+                        "type": "string"
+                      },
+                      "scenario": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "success"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "failure"
+                            ]
+                          }
+                        ]
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "processing"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "succeeded"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "failed"
+                            ]
+                          }
+                        ]
+                      },
+                      "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "imageUrl": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "failureCode": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "href",
+                            "method"
+                          ],
+                          "properties": {
+                            "href": {
+                              "pattern": "^/",
+                              "type": "string"
+                            },
+                            "method": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "GET"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "POST"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "PUT"
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createGeneration",
+        "summary": "Создать генерацию",
+        "tags": [
+          "Generations"
+        ],
+        "description": "Сначала завершите сохранение графа. graphETag в теле указывает снимок графа; If-Match здесь не используется. processing: 202 с Location и Retry-After; мгновенное создание: 201; завершённый повтор по ключу: 200.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "nodeId",
+                  "graphETag",
+                  "scenario"
+                ],
+                "properties": {
+                  "nodeId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "graphETag": {
+                    "pattern": "^\"[a-f0-9]{64}\"$",
+                    "type": "string"
+                  },
+                  "scenario": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "success"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "failure"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          },
+          {
+            "schema": {
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "description": "Сохраняйте ключ при повторе запроса; для новой генерации нужен новый ключ."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "spaceId",
+                    "nodeId",
+                    "resultNodeId",
+                    "prompt",
+                    "graphETag",
+                    "scenario",
+                    "status",
+                    "createdAt",
+                    "imageUrl",
+                    "failureCode",
+                    "links"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "spaceId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "nodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resultNodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "prompt": {
+                      "type": "string"
+                    },
+                    "graphETag": {
+                      "type": "string"
+                    },
+                    "scenario": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "success"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failure"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "processing"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "succeeded"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failed"
+                          ]
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "failureCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Ресурс создан.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "spaceId",
+                    "nodeId",
+                    "resultNodeId",
+                    "prompt",
+                    "graphETag",
+                    "scenario",
+                    "status",
+                    "createdAt",
+                    "imageUrl",
+                    "failureCode",
+                    "links"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "spaceId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "nodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resultNodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "prompt": {
+                      "type": "string"
+                    },
+                    "graphETag": {
+                      "type": "string"
+                    },
+                    "scenario": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "success"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failure"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "processing"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "succeeded"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failed"
+                          ]
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "failureCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Ресурс создан."
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Обработка продолжается.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "spaceId",
+                    "nodeId",
+                    "resultNodeId",
+                    "prompt",
+                    "graphETag",
+                    "scenario",
+                    "status",
+                    "createdAt",
+                    "imageUrl",
+                    "failureCode",
+                    "links"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "spaceId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "nodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resultNodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "prompt": {
+                      "type": "string"
+                    },
+                    "graphETag": {
+                      "type": "string"
+                    },
+                    "scenario": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "success"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failure"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "processing"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "succeeded"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failed"
+                          ]
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "failureCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Обработка продолжается."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "GRAPH_CHANGED, GENERATION_IN_PROGRESS или IDEMPOTENCY_CONFLICT.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE: максимум 64 КБ.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "UNSUPPORTED_MEDIA_TYPE или UNSUPPORTED_CONTENT_ENCODING.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Accept-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Только при неподдерживаемом Content-Encoding: identity."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "GENERATOR_REQUIRED или INCOMPLETE_CHAIN.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_listGenerations",
+        "summary": "Заголовки: Генерации пространства",
+        "tags": [
+          "Generations"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_listGenerations",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/spaces/{spaceId}/generations/{generationId}": {
+      "get": {
+        "operationId": "getGeneration",
+        "summary": "Статус и результат генерации",
+        "tags": [
+          "Generations"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "generationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "spaceId",
+                    "nodeId",
+                    "resultNodeId",
+                    "prompt",
+                    "graphETag",
+                    "scenario",
+                    "status",
+                    "createdAt",
+                    "imageUrl",
+                    "failureCode",
+                    "links"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "spaceId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "nodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resultNodeId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "prompt": {
+                      "type": "string"
+                    },
+                    "graphETag": {
+                      "type": "string"
+                    },
+                    "scenario": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "success"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failure"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "processing"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "succeeded"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "failed"
+                          ]
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "failureCode": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "method"
+                        ],
+                        "properties": {
+                          "href": {
+                            "pattern": "^/",
+                            "type": "string"
+                          },
+                          "method": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "GET"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "POST"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PUT"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Текущее представление ресурса."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND или GENERATION_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/def-0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_getGeneration",
+        "summary": "Заголовки: Статус и результат генерации",
+        "tags": [
+          "Generations"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "spaceId",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "generationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "description": "Условие для ресурса по адресу запроса. ETag выдаётся только там, где указан в ответе."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false,
+            "description": "Совпадение: 304 для GET/HEAD, 412 для изменения."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущее представление ресурса.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Условие If-None-Match совпало; без тела.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные поля, JSON или заголовки.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPACE_NOT_FOUND или GENERATION_NOT_FOUND.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED: условие запроса не выполнено.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_ERROR.",
+            "headers": {
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_getGeneration",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/demo.svg": {
+      "get": {
+        "operationId": "getDemoImage",
+        "summary": "Тестовое изображение",
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Локальное SVG-изображение.",
+            "content": {
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string",
+                  "description": "Локальное SVG-изображение."
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Без тела.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "head_getDemoImage",
+        "summary": "Заголовки: Тестовое изображение",
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-match",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "if-none-match",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Локальное SVG-изображение."
+          },
+          "304": {
+            "description": "Без тела.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос."
+          },
+          "412": {
+            "description": "PRECONDITION_FAILED."
+          },
+          "500": {
+            "description": "Внутренняя ошибка."
+          }
+        }
+      },
+      "options": {
+        "operationId": "options_getDemoImage",
+        "tags": [
+          "HTTP"
+        ],
+        "summary": "Разрешённые методы",
+        "responses": {
+          "204": {
+            "description": "Без тела.",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "API"
+    },
+    {
+      "name": "Spaces"
+    },
+    {
+      "name": "Graph"
+    },
+    {
+      "name": "Generations"
+    },
+    {
+      "name": "Assets"
+    },
+    {
+      "name": "HTTP"
+    }
+  ]
+}
