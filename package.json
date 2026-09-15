@@ -12,7 +12,7 @@
     "npm": ">=11 <12"
   },
   "scripts": {
-    "dev": "npm run build -w @canvas/contracts && npm run dev -w @canvas/api",
+    "dev": "npm run build -w @canvas/contracts && npm run dev -w @canvas/api && npm run dev -w @canvas/web",
     "build": "npm run build -w @canvas/contracts && npm run build -w @canvas/api",
     "start": "npm run start -w @canvas/api",
     "test": "npm run build && npm run test -w @canvas/api",

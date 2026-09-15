@@ -2,6 +2,20 @@
 
 Добавьте приложение на React, TypeScript и React Flow. Имя workspace — `@canvas/web`. Опишите установку и запуск в README своего решения.
 
-[Задание](../../docs/ASSIGNMENT.md) · [API](../../docs/INTEGRATION.md)
+## Project start
 
-[Критерии оценки](../../docs/EVALUATION.md).
+```npm
+npm run dev
+```
+
+## Project build
+
+```npm
+npm run build
+```
+
+## Preview mode
+
+```npm
+npm run preview
+```
