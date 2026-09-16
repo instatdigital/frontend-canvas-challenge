@@ -17,6 +17,10 @@ export type ApiResponse<T> = {
   headers: Headers;
 };
 
+export function toAbsoluteUrl(path: string): string {
+  return `${API_BASE_URL}${path}`;
+}
+
 export async function apiRequest<T>(
   path: string,
   options: ApiRequestOptions = {},
