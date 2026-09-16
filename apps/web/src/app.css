@@ -15,8 +15,320 @@ body {
   background: #f5f7fa;
 }
 
-.stub {
-  max-width: 40rem;
-  margin: 4rem auto;
-  padding: 0 1rem;
+button {
+  font: inherit;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid #9fb3c8;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1f2933;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: #eef3f8;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #9fb3c8;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1f2933;
+}
+
+.page-note {
+  max-width: 34rem;
+  margin: 5rem auto;
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.page-note--error {
+  border: 1px solid #d9480f;
+  border-radius: 8px;
+  background: #fff5f5;
+}
+
+.form-card {
+  max-width: 30rem;
+  margin: 6rem auto;
+  padding: 1.5rem 2rem;
+  border: 1px solid #ccd5e0;
+  border-radius: 10px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-card h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.form-hint {
+  margin: 0;
+  color: #52606d;
+}
+
+.form-field {
+  font-weight: 600;
+}
+
+.form-card input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-card button {
+  align-self: flex-start;
+}
+
+.form-error {
+  margin: 0;
+  color: #c92a2a;
+}
+
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ccd5e0;
+  background: #ffffff;
+}
+
+.topbar-title {
+  margin: 0;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 24rem;
+}
+
+.toolbar-add {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sync {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.sync-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #52606d;
+}
+
+.sync--pending .sync-dot {
+  background: #f08c00;
+}
+
+.sync--saving .sync-dot {
+  background: #1971c2;
+}
+
+.sync--saved .sync-dot {
+  background: #2f9e44;
+}
+
+.sync--error .sync-dot,
+.sync--conflict .sync-dot {
+  background: #e03131;
+}
+
+.sync-message {
+  color: #c92a2a;
+}
+
+.conflict-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: #fff5f5;
+  border-bottom: 1px solid #d9480f;
+}
+
+.conflict-banner p {
+  margin: 0;
+}
+
+.canvas-wrap {
+  flex: 1;
+  min-height: 0;
+}
+
+.canvas-node {
+  min-width: 230px;
+  max-width: 280px;
+  border: 1px solid #9fb3c8;
+  border-left-width: 5px;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.canvas-node--prompt {
+  border-left-color: #1971c2;
+}
+
+.canvas-node--generator {
+  border-left-color: #f08c00;
+}
+
+.canvas-node--result {
+  border-left-color: #2f9e44;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.node-kind {
+  font-weight: 700;
+}
+
+.node-delete {
+  padding: 0 0.45rem;
+  border: none;
+  background: none;
+  font-size: 0.9rem;
+  color: #52606d;
+}
+
+.node-delete:hover:not(:disabled) {
+  color: #e03131;
+  background: none;
+}
+
+.node-field {
+  font-weight: 600;
+}
+
+.canvas-node textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.canvas-node select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.node-action {
+  align-self: stretch;
+  background: #e7f5ff;
+  border-color: #1971c2;
+}
+
+.node-action:hover:not(:disabled) {
+  background: #d0ebff;
+}
+
+.node-status {
+  color: #52606d;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.node-error {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #c92a2a;
+}
+
+.node-error span {
+  overflow-wrap: anywhere;
+}
+
+.node-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #ccd5e0;
+}
+
+.handle-label {
+  font-size: 0.75rem;
+  color: #7b8794;
+}
+
+.handle-label--in {
+  align-self: flex-start;
+  margin-left: -0.4rem;
+}
+
+.handle-label--out {
+  align-self: flex-end;
+  margin-right: -0.4rem;
+}
+
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  background: #1971c2;
+  border: 2px solid #ffffff;
+}
+
+.react-flow__node.selected .canvas-node {
+  border-color: #1971c2;
+  box-shadow:
+    0 0 0 2px #a5d8ff,
+    0 4px 10px rgba(25, 113, 194, 0.15);
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #1971c2;
+  stroke-width: 2.5;
+}
+
+.spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  border: 2px solid #ccd5e0;
+  border-top-color: #1971c2;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -10,7 +10,7 @@ export type CanvasGraph = { nodes: CanvasNode[]; edges: CanvasEdge[]; viewport: 
 export const MAX_NODES = 20;
 export const MAX_EDGES = 20;
 
-const POSITION_LIMIT = 10000;
+export const POSITION_LIMIT = 10000;
 const ZOOM_MIN = 0.1;
 const ZOOM_MAX = 4;
 
