@@ -96,7 +96,10 @@ export function useCanvasEditor(spaceId: string) {
     setLoadError(null);
     void (async () => {
       try {
-        const graph = await sync.load(abort.signal);
+        const [graph, generations] = await Promise.all([
+          sync.load(abort.signal),
+          listGenerations(spaceId, abort.signal),
+        ]);
         if (cancelled) return;
         const canvas = fromApiGraph(graph);
         nodesRef.current = canvas.nodes;
@@ -105,7 +108,7 @@ export function useCanvasEditor(spaceId: string) {
         setNodes(canvas.nodes);
         setEdges(canvas.edges);
         setInitialViewport(graph.viewport);
-        manager.restore(await listGenerations(spaceId, abort.signal));
+        manager.restore(generations);
         if (!cancelled) setPhase('ready');
       } catch (error) {
         if (cancelled || isAborted(error)) return;
