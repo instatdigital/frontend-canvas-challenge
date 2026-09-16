@@ -13,7 +13,9 @@
   },
   "scripts": {
     "dev": "npm run build -w @canvas/contracts && npm run dev -w @canvas/api",
+    "dev:web": "npm run build -w @canvas/contracts && npm run dev -w @canvas/web",
     "build": "npm run build -w @canvas/contracts && npm run build -w @canvas/api",
+    "build:web": "npm run build -w @canvas/contracts && npm run build -w @canvas/web",
     "start": "npm run start -w @canvas/api",
     "test": "npm run build && npm run test -w @canvas/api",
     "docs:generate": "npm run build && node scripts/openapi.mjs --write",
